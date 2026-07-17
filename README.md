@@ -1,4 +1,4 @@
-<div align="center"><img src="https://raw.githubusercontent.com/ChintanDiwakar/zentickr-yahoo-query-mcp/refs/heads/main/avatar.png" alt="Zentickr Logo" width="200" height="200" /></div>
+<div align="center"><img src="https://raw.githubusercontent.com/chintan-diwakar/zentickr-yahoo-query-mcp/refs/heads/main/avatar.png" alt="Zentickr Logo" width="200" height="200" /></div>
 
 # Zentickr — Yahoo Finance MCP Server
 
@@ -103,13 +103,13 @@ Valuation Measures:
 [
   {
     "symbol": "AAPL",
-    "asOfDate": "2024-06-10 00:00:00",
+    "asOfDate": "2026-05-28 00:00:00",
     "periodType": "TTM",
-    "ForwardPeRatio": 26.2467,
-    "MarketCap": 2961317915840.0,
-    "PbRatio": 39.913172,
-    "PeRatio": 30.034215,
-    "PegRatio": 2.0439
+    "ForwardPeRatio": 35.3357,
+    "MarketCap": 4589945623560.0,
+    "PbRatio": 43.101723,
+    "PeRatio": 37.83414,
+    "PegRatio": 2.7194
   }
 ]
 ```
