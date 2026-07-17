@@ -6,7 +6,6 @@ An MCP server that provides access to Yahoo Finance data through yahooquery.
 Exposes financial data, market information, and historical prices as tools.
 """
 
-import asyncio
 import json
 from typing import Any, Dict, List, Optional
 from datetime import datetime, timedelta
