@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Yahoo Finance MCP Server
+Zentickr — Yahoo Finance MCP server.
 
 An MCP server that provides access to Yahoo Finance data through yahooquery.
 Exposes financial data, market information, and historical prices as tools.
@@ -16,7 +16,7 @@ from yahooquery import Ticker
 import pandas as pd
 
 # Initialize the MCP server
-mcp = FastMCP("yahoo-finance")
+mcp = FastMCP("zentickr")
 
 # Helper function to convert pandas objects to JSON-serializable format
 def convert_to_json_serializable(data: Any) -> Any:
@@ -425,18 +425,10 @@ async def search_symbols(query: str) -> str:
     except Exception as e:
         return f"Error searching symbols: {str(e)}"
 
-# Run the server
-if __name__ == "__main__":
-    mcp.run(transport='stdio')
+def main() -> None:
+    """Run the Zentickr MCP server over stdio."""
+    mcp.run(transport="stdio")
 
-
-def main():
-    """Entry point for the alex-mcp command."""
-    import sys
-    
-    # When installed as a package, the src directory is not in the path
-    asyncio.run(mcp.run(transport='stdio'))
-    print("  MCP Server started successfully.")
 
 if __name__ == "__main__":
     main()
