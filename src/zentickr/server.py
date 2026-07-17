@@ -19,35 +19,31 @@ mcp = FastMCP("zentickr")
 
 # Helper function to convert pandas objects to JSON-serializable format
 def convert_to_json_serializable(data: Any) -> Any:
-    """Convert pandas DataFrames and other objects to JSON-serializable format."""
+    """Convert pandas objects (and containers of them) to JSON-serializable structures."""
     if isinstance(data, pd.DataFrame):
-        # Reset index to make it a column if it has meaningful data
         if data.index.name or not isinstance(data.index, pd.RangeIndex):
             data = data.reset_index()
-        return data.to_dict(orient='records')
-    elif isinstance(data, pd.Series):
+        return data.to_dict(orient="records")
+    if isinstance(data, pd.Series):
         return data.to_dict()
-    elif isinstance(data, dict):
+    if isinstance(data, dict):
         return {k: convert_to_json_serializable(v) for k, v in data.items()}
-    elif isinstance(data, (list, tuple)):
+    if isinstance(data, (list, tuple)):
         return [convert_to_json_serializable(item) for item in data]
-    elif pd.isna(data):
-        return None
-    else:
-        return data
+    try:
+        if pd.isna(data):
+            return None
+    except (TypeError, ValueError):
+        pass  # array-likes where isna() is ambiguous pass through; json default=str handles them
+    return data
 
 # Helper function to format response
 def format_response(data: Any, title: str) -> str:
-    """Format the response data as a readable string."""
-    try:
-        json_data = convert_to_json_serializable(data)
-        if json_data is None or (isinstance(json_data, list) and len(json_data) == 0):
-            return f"{title}: No data available"
-        
-        # Pretty print JSON for readability
-        return f"{title}:\n{json.dumps(json_data, indent=2, default=str)}"
-    except Exception as e:
-        return f"{title}: Error formatting data - {str(e)}"
+    """Format response data as a titled, pretty-printed JSON string."""
+    json_data = convert_to_json_serializable(data)
+    if json_data is None or (isinstance(json_data, (list, dict)) and len(json_data) == 0):
+        return f"{title}: No data available"
+    return f"{title}:\n{json.dumps(json_data, indent=2, default=str)}"
 
 @mcp.tool()
 async def get_financial_data(symbols: str) -> str:
