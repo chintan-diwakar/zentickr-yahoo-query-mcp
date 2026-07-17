@@ -12,7 +12,7 @@
 - [x] Offline pytest suite green; ruff clean; CI quality workflow green on the PR
 - [x] README rewritten (codex draft, Fable-verified): real captured outputs, client configs, full tool catalog
 - [x] Contributor kit present: CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, issue/PR templates, CHANGELOG, AGENTS.md
-- [ ] PR merged with green CI; tag v0.1.0 pushed; GitHub Release published
+- [x] PR merged with green CI; tag v0.1.0 pushed; GitHub Release published
 
 ## Non-goals
 PyPI, Docker, retries/rate-limiting, live-API tests in CI, new data tools.
@@ -20,3 +20,8 @@ PyPI, Docker, retries/rate-limiting, live-API tests in CI, new data tools.
 ## Progress log
 - 2026-07-17: Spec approved, plan written, audit recorded.
 - 2026-07-17: e2e smoke passed (23 tools live); PR ready for merge.
+- 2026-07-17: v0.1.0 released — PR #2 squash-merged (b9ffe2f), tag pushed, GitHub Release published.
+  Post-release fast-follows from final review: NaN cells inside DataFrame/Series records escape
+  NaN→null conversion; get_historical_prices swallows per-symbol dict errors; search_symbols title
+  varies by path; frequency arg unvalidated; local gate omits ruff format --check; blocking I/O in
+  async tools serializes concurrent calls.
