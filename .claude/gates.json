@@ -1,0 +1,9 @@
+{
+  "gates": [
+    {
+      "dir": ".",
+      "dirtyGlob": "\\.py$",
+      "check": ".venv/bin/ruff check src tests && .venv/bin/pytest -q"
+    }
+  ]
+}

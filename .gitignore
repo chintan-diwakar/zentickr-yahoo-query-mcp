@@ -28,6 +28,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.venv/
+.venv-release/
 
 # IDE
 .vscode/
@@ -59,6 +61,7 @@ logs/
 # Testing
 .coverage
 .pytest_cache/
+.ruff_cache/
 .tox/
 .nox/
 coverage.xml
