@@ -3,7 +3,7 @@
     {
       "dir": ".",
       "dirtyGlob": "\\.py$",
-      "check": ".venv/bin/ruff check src tests && .venv/bin/pytest -q"
+      "check": ".venv/bin/ruff check . && .venv/bin/ruff format --check . && .venv/bin/pytest -q"
     }
   ]
 }

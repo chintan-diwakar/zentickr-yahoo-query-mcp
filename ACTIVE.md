@@ -25,3 +25,8 @@ PyPI, Docker, retries/rate-limiting, live-API tests in CI, new data tools.
   NaN→null conversion; get_historical_prices swallows per-symbol dict errors; search_symbols title
   varies by path; frequency arg unvalidated; local gate omits ruff format --check; blocking I/O in
   async tools serializes concurrent calls.
+- 2026-08-08: Fast-follows closed: NaN cells now serialize as null (incl. get_historical_prices);
+  local gate aligned with CI (ruff check + ruff format --check + pytest). Still open: search_symbols
+  title varies by path; frequency arg unvalidated; blocking I/O in async tools. Dropped:
+  get_historical_prices per-symbol errors (yahooquery 2.4.1 drops failed symbols before returning,
+  so no error text reaches us).

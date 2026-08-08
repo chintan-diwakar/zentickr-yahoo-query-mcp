@@ -29,9 +29,9 @@ def convert_to_json_serializable(data: Any) -> Any:
     if isinstance(data, pd.DataFrame):
         if data.index.name or not isinstance(data.index, pd.RangeIndex):
             data = data.reset_index()
-        return data.to_dict(orient="records")
+        return [convert_to_json_serializable(record) for record in data.to_dict(orient="records")]
     if isinstance(data, pd.Series):
-        return data.to_dict()
+        return convert_to_json_serializable(data.to_dict())
     if isinstance(data, dict):
         return {k: convert_to_json_serializable(v) for k, v in data.items()}
     if isinstance(data, (list, tuple)):
@@ -317,7 +317,7 @@ async def get_historical_prices(
             data = data.reset_index()
             if "date" in data.columns:
                 data["date"] = data["date"].astype(str)
-            records = data.to_dict(orient="records")
+            records = convert_to_json_serializable(data)
             return f"{title}:\n{json.dumps(records, indent=2, default=str)}"
         return f"{title}: No data available"
     except Exception as exc:

@@ -3,6 +3,13 @@
 All notable changes to this project are documented in this file.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning: [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- Missing values inside DataFrame/Series results serialized as bare `NaN`,
+  which is not valid JSON and breaks strict client-side parsers. They now
+  serialize as `null`, including in `get_historical_prices`.
+
 ## [0.1.0] - 2026-07-17
 
 First release.

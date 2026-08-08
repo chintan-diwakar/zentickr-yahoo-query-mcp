@@ -1,3 +1,6 @@
+import json
+
+import pandas as pd
 import pytest
 
 import zentickr.server as server
@@ -96,3 +99,40 @@ async def test_historical_prices_uses_date_range(monkeypatch):
     assert StubTicker.last_history_kwargs["start"] == "2025-01-01"
     assert StubTicker.last_history_kwargs["end"] == "2025-06-30"
     assert "period" not in StubTicker.last_history_kwargs
+
+
+def strict_payload(response: str):
+    """Parse the JSON body of a tool response, rejecting NaN/Infinity literals."""
+
+    def reject(constant):
+        raise ValueError(f"not valid JSON: {constant}")
+
+    return json.loads(response.split(":\n", 1)[1], parse_constant=reject)
+
+
+def test_dataframe_missing_cells_serialize_as_null():
+    frame = pd.DataFrame({"eps": [1.5, float("nan")], "note": ["ok", None]})
+    payload = strict_payload(server.format_response(frame, "T"))
+    assert payload == [{"eps": 1.5, "note": "ok"}, {"eps": None, "note": None}]
+
+
+def test_series_missing_values_serialize_as_null():
+    series = pd.Series({"trailingPE": 30.1, "forwardPE": float("nan")})
+    payload = strict_payload(server.format_response(series, "T"))
+    assert payload == {"trailingPE": 30.1, "forwardPE": None}
+
+
+async def test_historical_prices_missing_cells_serialize_as_null(monkeypatch):
+    class NanHistoryTicker:
+        def __init__(self, symbols):
+            pass
+
+        def history(self, **kwargs):
+            index = pd.MultiIndex.from_tuples([("AAPL", "2025-01-02")], names=["symbol", "date"])
+            return pd.DataFrame({"close": [1.0], "adjclose": [float("nan")]}, index=index)
+
+    monkeypatch.setattr(server, "Ticker", NanHistoryTicker)
+    out = await server.get_historical_prices("AAPL", period="5d")
+    assert strict_payload(out) == [
+        {"symbol": "AAPL", "date": "2025-01-02", "close": 1.0, "adjclose": None}
+    ]
